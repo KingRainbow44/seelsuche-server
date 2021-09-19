@@ -1,0 +1,19 @@
+{
+  "multiplayer": {
+    "ports": {
+      "udp": 5000,
+      "websocket": 3000,
+      "stats": 7776
+    }
+  },
+  "player_handle": {
+    "ssl": {
+      "enabled": false,
+      "certificate": "",
+      "key":""
+    },
+    "ports": {
+      "websocket": 8443
+    }
+  }
+}

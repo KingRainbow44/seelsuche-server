@@ -1,0 +1,28 @@
+{
+  "name": "terrain-game-server",
+  "version": "1.0.0",
+  "description": "A game server for Terrain Game.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node --experimental-json-modules src/index.js && node --experimental-json-modules src/player-handle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KingRainbow44/TerrainGame.git"
+  },
+  "keywords": [
+    "unity"
+  ],
+  "author": "KingRainbow44",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KingRainbow44/TerrainGame/issues"
+  },
+  "homepage": "https://github.com/KingRainbow44/TerrainGame#readme",
+  "dependencies": {
+    "edge-multiplay": "^1.2.1",
+    "ws": "*"
+  }
+}
