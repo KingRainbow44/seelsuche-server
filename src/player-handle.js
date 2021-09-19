@@ -1,7 +1,8 @@
 // noinspection EqualityComparisonWithCoercionJS
 
-import config from "resources/config.json";
+import config from "resources/default-config.json";
 import * as constants from "./constants";
+import { Database } from "./database";
 import * as utils from "./utils";
 import https from "https";
 import http from "http";
@@ -25,6 +26,8 @@ let ws = new ws.Server({
     server: server
 });
 
+let database = new Database();
+
 ws.on('connection', (ws) => {
     ws.on('message', (data) => {
         if(typeof data != "string") {
@@ -47,8 +50,7 @@ ws.on('connection', (ws) => {
                     ws.send('error:invalid-request'); return;
                 }
 
-                let userHash = request[1]; let userExists = true;
-                // Make MySQL request to check if user exists in database.
+                let userHash = request[1]; let userExists = database.userExists(userHash);
                 if(userExists) {
                     ws.send('login:user-found');
                     // Take contents of MySQL result and send over data needed for client.
@@ -62,9 +64,12 @@ ws.on('connection', (ws) => {
                     ws.send('error:invalid-request'); return;
                 }
 
-                let credentials = request[1].split(":"); let accountExists = false;
-                // Make MySQL request to check if that account exists.
+                let credentials = request[1].split(":");
+                let accountHash = credentials[0] + ":" + utils.sha256(credentials[1]);
+                let buffer = Buffer.from(accountHash); accountHash = buffer.toString('base64url');
+                let accountExists = database.userExists(accountHash);
                 if(!accountExists) {
+                    database.insertUserData(accountHash);
                     ws.send('signup:sign-up-successful');
                 } else {
                     ws.send('signup:account-exists');

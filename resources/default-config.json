@@ -10,10 +10,19 @@
     "ssl": {
       "enabled": false,
       "certificate": "",
-      "key":""
+      "key": ""
     },
     "ports": {
       "websocket": 8443
     }
+  },
+  "database": {
+    "address": "",
+    "port": 3306,
+
+    "username": "seelsuche",
+    "password": "qwertyasdf123!",
+
+    "database": "seelsuche"
   }
 }

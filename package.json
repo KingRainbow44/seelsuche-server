@@ -23,6 +23,7 @@
   "homepage": "https://github.com/KingRainbow44/TerrainGame#readme",
   "dependencies": {
     "edge-multiplay": "^1.2.1",
+    "mysql": "*",
     "ws": "*"
   }
 }
