@@ -1,4 +1,6 @@
-import * as config from "resources/config.json";
+// noinspection EqualityComparisonWithCoercionJS
+
+import config from "../resources/config.json";
 import mysql from "mysql";
 
 let connection = null;
@@ -16,43 +18,37 @@ export class Database {
         });
 
         connection.connect((error) => {
-            if(error)
+            if(error) {
                 connected = false;
-            else {
+                console.log(`Unable to connect to ${config.database.address}:${config.database.port}.`)
+            } else {
                 connected = true;
                 console.log(`Connected to MySQL database: ${config.database.database}.`)
+
+                connection.query("CREATE TABLE IF NOT EXISTS `player-data` ( `userHash` TEXT NOT NULL , `data` LONGTEXT NOT NULL )");
             }
         });
     }
 
     checkConnection() {
-        return connected && connection.state === 'disconnected';
+        return connected && connection.state !== 'disconnected';
     }
 
-    userExists(userHash) {
-        let exists = false
-        connection.connect((error) => {
-            if(error) {
-                exists = false;
-            } else {
-                connection.query("SELECT * FROM `player-data` WHERE `userHash`=`" + userHash + "`;", (error, result) => {
-                    if(error) {
-                        exists = false;
-                    } else {
-                        exists = result.length > 0;
-                    }
-                });
-            }
-        })
+    userExists(userHash, callback) {
+        if(!this.checkConnection()) return false;
 
-        return exists;
+        connection.query("SELECT * FROM `player-data` WHERE `userHash`='" + userHash + "';", (error, result) => {
+            if(error) throw error;
+
+            let exists = result.length != 0;
+            callback(exists);
+        });
     }
 
     insertUserData(userHash) {
-        connection.connect((error) => {
-            if(!error) {
-                connection.query("INSERT INTO `player-data` (`userHash`, `data`) VALUES ('" + userHash + ", '{}');");
-            }
-        })
+        if(!this.checkConnection()) return;
+        connection.query("INSERT INTO `player-data` (`userHash`, `data`) VALUES ('" + userHash + "', '{}');", (error) => {
+            if(error) throw error;
+        });
     }
 }

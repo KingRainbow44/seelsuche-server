@@ -9,9 +9,16 @@ export function isJson(str) {
     return true;
 }
 
-export async function sha256(string) {
-    let hash = crypto.createHash('sha256'); let hashed = string;
-    hash.update(hashed);
-    hash.digest(hashed);
-    return hashed;
+export function json2array(json){
+    let result = [];
+    let keys = Object.keys(json);
+    keys.forEach(function(key){
+        result.push(json[key]);
+    });
+
+    return result;
+}
+
+export function sha256(string) {
+    return Buffer.from(crypto.createHash('sha256').update(string).digest('base64'), 'base64');
 }
