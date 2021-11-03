@@ -1,16 +1,16 @@
 {
-  "name": "terrain-game-server",
+  "name": "seelsuche-server",
   "version": "1.0.0",
-  "description": "A game server for Terrain Game.",
-  "main": "index.js",
+  "description": "The secondary multiplayer & primary data server for Seelsuche.",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --experimental-json-modules src/player-handle.js"
+    "start": "node --experimental-json-modules src/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KingRainbow44/TerrainGame.git"
+    "url": "git+https://github.com/KingRainbow44/Seelsuche.git"
   },
   "keywords": [
     "unity"
@@ -18,11 +18,10 @@
   "author": "KingRainbow44",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KingRainbow44/TerrainGame/issues"
+    "url": "https://github.com/KingRainbow44/Seelsuche/issues"
   },
-  "homepage": "https://github.com/KingRainbow44/TerrainGame#readme",
+  "homepage": "https://github.com/KingRainbow44/Seelsuche#readme",
   "dependencies": {
-    "edge-multiplay": "*",
     "mysql": "*",
     "ws": "*"
   }

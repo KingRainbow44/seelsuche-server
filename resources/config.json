@@ -1,10 +1,10 @@
 {
   "database": {
-    "address": "",
+    "address": "localhost",
     "port": 3306,
 
     "username": "seelsuche",
-    "password": "qwertyasdf123!",
+    "password": "hFL9-dPpUyV7O[)9",
 
     "database": "seelsuche"
   },
@@ -12,6 +12,7 @@
   "multiplayer": {
     "port": 8443,
     "settings": {
+      "developerMode": true,
       "player_cap": true
     }
   },
@@ -19,7 +20,7 @@
   "data": {
     "port": 3000,
     "settings": {
-      "developerMode": false
+      "developerMode": true
     }
   },
 

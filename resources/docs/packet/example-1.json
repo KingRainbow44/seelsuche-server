@@ -1,0 +1,18 @@
+{
+  "request": "packet",
+  "data": {
+    "0": {
+      "type": "int",
+      "raw": 4
+    },
+    "1": {
+      "type": "int",
+      "raw": 1
+    },
+    "2": {
+      "type": "int",
+      "raw": 10
+    }
+  },
+  "id": "0x01"
+}

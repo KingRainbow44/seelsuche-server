@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { createHash } from "crypto";
 
 export function isJson(str) {
     try {
@@ -20,5 +20,17 @@ export function json2array(json){
 }
 
 export function sha256(string) {
-    return Buffer.from(crypto.createHash('sha256').update(string).digest('base64'), 'base64');
+    return createHash('sha256').update(string).digest('hex');
+}
+
+export function base64(string) {
+    return Buffer.from(string).toString('base64');
+}
+
+export function fromBase64(base64) {
+    return Buffer.from(base64, 'base64').toString('ascii');
+}
+
+export function generateUserId(userId) {
+
 }

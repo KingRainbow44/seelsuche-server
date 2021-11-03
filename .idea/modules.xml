@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Documents/My Projects/SeelsucheLauncher/.idea/SeelsucheLauncher.iml" filepath="$USER_HOME$/Documents/My Projects/SeelsucheLauncher/.idea/SeelsucheLauncher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/terrain-game-server.iml" filepath="$PROJECT_DIR$/.idea/terrain-game-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Server.iml" filepath="$PROJECT_DIR$/.idea/Server.iml" />
+      <module fileurl="file://$USER_HOME$/My Projects/seelsuche-game-server/.idea/seelsuche-game-server.iml" filepath="$USER_HOME$/My Projects/seelsuche-game-server/.idea/seelsuche-game-server.iml" />
     </modules>
   </component>
 </project>
