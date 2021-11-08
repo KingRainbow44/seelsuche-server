@@ -1,0 +1,25 @@
+{
+  "name": "seelsuche/server",
+  "description": "The Seelsuche game server in PHP.",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "magix",
+      "email": "magix@legendmc.us"
+    }
+  ],
+  "require": {
+    "cboden/ratchet": "^0.4",
+    "symfony/finder": "^5.1",
+
+    "ext-json": "*",
+    "ext-parallel": "*",
+    "ext-mysqli": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "seelsuche\\server\\": "src/seelsuche/server"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "port": 8443,
+
+  "database": {
+    "address": "",
+    "port": 3306,
+
+    "username": "seelsuche",
+    "password": "qwertyasdf123!",
+
+    "database": "seelsuche"
+  },
+  "socket": {
+    "ssl": false,
+    "certificate": "",
+    "privateKey": ""
+  },
+
+  "development": {
+    "enabled": false
+  }
+}
