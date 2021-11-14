@@ -1,0 +1,20 @@
+{
+  "information": {
+    "userId": "0000000000",
+    "username": "deFaultUserName",
+    "lastConnection": "(hashed IP address)",
+
+    "displayName": "default"
+  },
+
+  "statistics": {
+    "baseDamage": 0,
+    "baseStrength": 0,
+    "baseDefense": 0,
+    "baseHealth": 100,
+    "baseCritRate": 5,
+    "baseCritMultiplier": 1.25,
+    "baseStamina": 100,
+    "baseSpeed": 0.4
+  }
+}

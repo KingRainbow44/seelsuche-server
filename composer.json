@@ -12,9 +12,9 @@
   "require": {
     "cboden/ratchet": "^0.4",
     "symfony/finder": "^5.1",
+    "pocketmine/math": "*",
 
     "ext-json": "*",
-    "ext-parallel": "*",
     "ext-mysqli": "*"
   },
   "autoload": {

@@ -3,18 +3,15 @@
 namespace seelsuche\server\player;
 
 use Ratchet\ConnectionInterface;
-use seelsuche\server\entity\EntityManager;
+use seelsuche\server\entity\types\LivingEntity;
 use seelsuche\server\Logger;
 use seelsuche\server\network\protocol\OutboundPacket;
 
 /**
  * This is NOT an abstract or final class because this player class can be extended by plugins.
  */
-class Player
+class Player extends LivingEntity
 {
-    # Internal Variables
-    protected int $entityId = 0;
-
     # Storage Variables
     protected string $userId = "0000000000";
 
@@ -26,7 +23,8 @@ class Player
     protected ConnectionInterface $connection;
 
     public function __construct(int $resourceId, string $ipAddress, ConnectionInterface $connection) {
-        $this->connection = $connection; $this->entityId = EntityManager::getNextId();
+        parent::__construct();
+        $this->connection = $connection;
 
         # Set constants.
         $this->ipAddress = $ipAddress;
@@ -42,8 +40,10 @@ class Player
     }
 
     public function setUserId(string $userId): void{
-        if($userId == "0000000000") # Ensures we only set a null user ID.
+        if($this->userId == "0000000000") { # Ensures we only set a null user ID.
             $this->userId = $userId;
+            PlayerManager::cachePlayer($userId, $this);
+        }
     }
 
     public function getIPAddress(): string{
@@ -52,6 +52,10 @@ class Player
 
     public function getResourceId(): int{
         return $this->resourceId;
+    }
+
+    public function getUserId(): string{
+        return $this->userId;
     }
 
     public function close(): void{

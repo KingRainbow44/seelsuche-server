@@ -25,12 +25,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-php',
+    'version' => 'dev-php',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => '376e385c9d4f34547c52b0edc58b17df5c43d4f7',
     'name' => 'seelsuche/server',
   ),
   'versions' => 
@@ -61,6 +61,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '1afdd860a2566ed3c2b0b4a3de6e23434a79ec85',
+    ),
+    'pocketmine/math' => 
+    array (
+      'pretty_version' => '0.4.0',
+      'version' => '0.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '6d64e2555bd2e95ed024574f75d1cefc135c89fc',
     ),
     'psr/http-message' => 
     array (
@@ -161,12 +170,12 @@ private static $installed = array (
     ),
     'seelsuche/server' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-php',
+      'version' => 'dev-php',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => '376e385c9d4f34547c52b0edc58b17df5c43d4f7',
     ),
     'symfony/deprecation-contracts' => 
     array (

@@ -21,6 +21,10 @@ class ComposerStaticInit33c928277de1ce7269eb7c2233f756f8
         array (
             'seelsuche\\server\\' => 17,
         ),
+        'p' => 
+        array (
+            'pocketmine\\math\\' => 16,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -55,6 +59,10 @@ class ComposerStaticInit33c928277de1ce7269eb7c2233f756f8
         'seelsuche\\server\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/seelsuche/server',
+        ),
+        'pocketmine\\math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pocketmine/math/src',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (

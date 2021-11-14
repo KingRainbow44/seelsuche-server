@@ -123,7 +123,12 @@ final class Server implements MessageComponentInterface
         Logger::debug("Connection made with $conn->remoteAddress");
 
         # Register player to manager.
-        PlayerManager::addPlayer($conn->resourceId, $conn->remoteAddress, $conn);
+        if(PlayerManager::getPlayerByUserId($conn->resourceId) == null)
+            PlayerManager::addPlayer($conn->resourceId, $conn->remoteAddress, $conn);
+        else {
+            PlayerManager::removePlayer($conn->resourceId);
+            PlayerManager::addPlayer($conn->resourceId, $conn->remoteAddress, $conn);
+        }
         # Add the connection to the array.
         $this->clients->attach($conn);
     }
