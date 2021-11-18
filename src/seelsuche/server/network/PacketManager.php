@@ -7,6 +7,9 @@ namespace seelsuche\server\network;
 use seelsuche\server\network\protocol\inbound\AuthenticationRequestPacket;
 use seelsuche\server\network\protocol\inbound\ChatReceivePacket;
 use seelsuche\server\network\protocol\inbound\ClientPingRequestPacket;
+use seelsuche\server\network\protocol\inbound\CoopActionPacket;
+use seelsuche\server\network\protocol\inbound\IncomingAudioPacket;
+use seelsuche\server\network\protocol\inbound\PlayerPositionPacket;
 use seelsuche\server\network\protocol\InboundPacket;
 use seelsuche\server\network\protocol\Packet;
 use seelsuche\server\player\Player;
@@ -23,6 +26,9 @@ final class PacketManager
         self::registerPacket("0x01", ClientPingRequestPacket::class);
         self::registerPacket("0x02", AuthenticationRequestPacket::class);
         self::registerPacket("0x03", ChatReceivePacket::class);
+        self::registerPacket("0x04", IncomingAudioPacket::class);
+        self::registerPacket("0x05", PlayerPositionPacket::class);
+        self::registerPacket("0x06", CoopActionPacket::class);
     }
 
     /**

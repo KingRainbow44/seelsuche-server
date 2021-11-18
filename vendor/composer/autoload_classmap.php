@@ -7,7 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+    'BaseClassLoader' => $vendorDir . '/pocketmine/classloader/src/BaseClassLoader.php',
+    'ClassLoader' => $vendorDir . '/pocketmine/classloader/src/ClassLoader.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'DynamicClassLoader' => $vendorDir . '/pocketmine/classloader/src/DynamicClassLoader.php',
     'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',

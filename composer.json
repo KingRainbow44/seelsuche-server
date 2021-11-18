@@ -13,8 +13,10 @@
     "cboden/ratchet": "^0.4",
     "symfony/finder": "^5.1",
     "pocketmine/math": "*",
+    "pocketmine/classloader": "*",
 
     "ext-json": "*",
+    "ext-pthreads": "*",
     "ext-mysqli": "*"
   },
   "autoload": {

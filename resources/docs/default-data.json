@@ -16,5 +16,26 @@
     "baseCritMultiplier": 1.25,
     "baseStamina": 100,
     "baseSpeed": 0.4
-  }
+  },
+
+  "inventory": [
+    {
+      "id": "seelsuche:(item id)",
+      "tags": {
+        "a": 0
+      },
+      "stats": {
+        "damage": 10
+      }
+    },
+    {
+      "id": "seelsuche:(item id)",
+      "tags": {
+        "a": 0
+      },
+      "stats": {
+        "damage": 10
+      }
+    }
+  ]
 }

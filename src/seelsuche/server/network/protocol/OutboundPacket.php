@@ -31,6 +31,10 @@ abstract class OutboundPacket extends Packet implements OutboundPacketIds
         $this->write("boolean", $data);
     }
 
+    protected function writeFloat(float $data): void{
+        $this->write("float", $data);
+    }
+
     protected function prepare(): string{
         return json_encode([
             "request" => "packet",

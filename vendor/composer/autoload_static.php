@@ -142,7 +142,10 @@ class ComposerStaticInit33c928277de1ce7269eb7c2233f756f8
 
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'BaseClassLoader' => __DIR__ . '/..' . '/pocketmine/classloader/src/BaseClassLoader.php',
+        'ClassLoader' => __DIR__ . '/..' . '/pocketmine/classloader/src/ClassLoader.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'DynamicClassLoader' => __DIR__ . '/..' . '/pocketmine/classloader/src/DynamicClassLoader.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',

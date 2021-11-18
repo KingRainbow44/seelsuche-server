@@ -229,6 +229,54 @@
             "install-path": "../guzzlehttp/psr7"
         },
         {
+            "name": "pocketmine/classloader",
+            "version": "0.2.0",
+            "version_normalized": "0.2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/ClassLoader.git",
+                "reference": "49ea303993efdfb39cd302e2156d50aa78209e78"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/ClassLoader/zipball/49ea303993efdfb39cd302e2156d50aa78209e78",
+                "reference": "49ea303993efdfb39cd302e2156d50aa78209e78",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pthreads": "~3.2.0 || ^4.0",
+                "ext-reflection": "*",
+                "php": "^8.0"
+            },
+            "conflict": {
+                "pocketmine/spl": "<0.4"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.99",
+                "phpstan/phpstan-strict-rules": "^0.12.4",
+                "phpunit/phpunit": "^9.5"
+            },
+            "time": "2021-11-01T20:17:27+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "./src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Ad-hoc autoloading components used by PocketMine-MP",
+            "support": {
+                "issues": "https://github.com/pmmp/ClassLoader/issues",
+                "source": "https://github.com/pmmp/ClassLoader/tree/0.2.0"
+            },
+            "install-path": "../pocketmine/classloader"
+        },
+        {
             "name": "pocketmine/math",
             "version": "0.4.0",
             "version_normalized": "0.4.0.0",

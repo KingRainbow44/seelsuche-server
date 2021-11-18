@@ -5,11 +5,16 @@
 
 namespace seelsuche\server;
 
+use ClassLoader;
 use Exception;
 use Phar;
+
 use SplObjectStorage;
 use JetBrains\PhpStorm\NoReturn;
 
+use seelsuche\server\commands\CommandReader;
+use seelsuche\server\plugin\events\EventManager;
+use seelsuche\server\utils\ServerThread;
 use seelsuche\server\network\DefaultProtocolInterface;
 use seelsuche\server\network\PacketManager;
 use seelsuche\server\network\ProtocolInterface;
@@ -23,25 +28,34 @@ final class Server implements MessageComponentInterface
 {
     private static ?Server $instance = null;
 
-    private SplObjectStorage $clients;
     private ?Database $database = null;
+    private EventManager $eventManager;
+    private SplObjectStorage $clients;
+    private ClassLoader $autoloader;
     private ?Phar $pharFile;
     private Flags $flags;
 
     private array $config;
 
     public ProtocolInterface $protocolInterface;
+    public CommandReader $console;
 
     /**
      * @throws Exception
      */
-    public function __construct(array $config, ?Phar $pharFile)
+    public function __construct(ClassLoader $autoloader, array $config, ?Phar $pharFile)
     {
         if(self::$instance != null)
             throw new Exception("Another server instance is already defined.");
         self::$instance = $this; $startTime = time();
+        $this->autoloader = $autoloader;
+
+        # Initialize the console reader.
+        $this->console = new CommandReader();
+        $this->console->start();
 
         $this->clients = new SplObjectStorage();
+        $this->eventManager = new EventManager();
 
         $this->config = $config; $this->flags = new Flags($config);
         $this->database = new Database($config["database"]); $this->initializeDatabase();
@@ -112,6 +126,21 @@ final class Server implements MessageComponentInterface
      */
     public function getDatabase(): Database{
         return $this->database;
+    }
+
+    /**
+     * @return EventManager The event manager for the server.
+     *
+     */
+    public function getEventManager(): EventManager{
+        return $this->eventManager;
+    }
+
+    /**
+     * @return ClassLoader The class autoloader for threads.
+     */
+    public function getAutoLoader(): ClassLoader{
+        return $this->autoloader;
     }
 
     /*

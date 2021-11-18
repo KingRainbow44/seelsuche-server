@@ -1,6 +1,7 @@
 <?php
 
-require dirname(__FILE__) . '/vendor/autoload.php';
+define("AUTOLOADER_PATH", dirname(__FILE__) . '/vendor/autoload.php');
+require AUTOLOADER_PATH;
 
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
@@ -32,6 +33,9 @@ $config = json_decode(file_get_contents(
 define("DEBUG", $config["development"]["enabled"]);
 $encryption = $config["socket"];
 
+$autoloader = new \BaseClassLoader();
+$autoloader->register();
+
 # Build web server.
 $server = null;
 if($encryption["ssl"] == true) {
@@ -47,7 +51,7 @@ if($encryption["ssl"] == true) {
     try {
         $server = new IoServer(
             new HttpServer(new WsServer(
-                new Server($config, $self)
+                new Server($autoloader, $config, $self)
             )), $socket, $loop
         );
     } catch (Exception $exception) {
@@ -57,7 +61,7 @@ if($encryption["ssl"] == true) {
     try {
         $server = IoServer::factory(
             new HttpServer(new WsServer(
-                new Server($config, $self)
+                new Server($autoloader, $config, $self)
             )), $config["port"]
         );
     } catch (Exception $exception) {

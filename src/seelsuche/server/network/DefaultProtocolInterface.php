@@ -2,13 +2,19 @@
 
 namespace seelsuche\server\network;
 
-use seelsuche\server\Logger;
+use Exception;
 use seelsuche\server\network\protocol\inbound\AuthenticationRequestPacket;
 use seelsuche\server\network\protocol\inbound\ChatReceivePacket;
 use seelsuche\server\network\protocol\inbound\ClientPingRequestPacket;
+use seelsuche\server\network\protocol\inbound\CoopActionPacket;
+use seelsuche\server\network\protocol\inbound\IncomingAudioPacket;
+use seelsuche\server\network\protocol\inbound\PlayerPositionPacket;
 use seelsuche\server\network\protocol\outbound\ChatDispatchPacket;
 use seelsuche\server\network\protocol\outbound\ClientPingResponsePacket;
 use seelsuche\server\network\protocol\outbound\AuthenticationResponsePacket;
+use seelsuche\server\network\protocol\outbound\CoopStatusPacket;
+use seelsuche\server\network\protocol\outbound\OutgoingAudioPacket;
+use seelsuche\server\player\coop\CoopSessionManager;
 use seelsuche\server\player\Player;
 use seelsuche\server\player\PlayerManager;
 use seelsuche\server\Server;
@@ -45,14 +51,24 @@ class DefaultProtocolInterface implements ProtocolInterface
                 return;
             }
 
-            $client->setUserId($entry["userId"]);
-            $pk = new AuthenticationResponsePacket();
-            $pk->username = $entry["username"];
-            $client->sendDataPacket($pk);
+            # Query the data table.
+            $database->query("SELECT * FROM `data` WHERE `userId`='{$entry["userId"]}';", function ($rows) use ($client, $entry) {
+                if(empty($rows)) {
+                    $pk = new AuthenticationResponsePacket();
+                    $pk->statusCode = 404;
+                    $client->sendDataPacket($pk);
+                    return;
+                } $data = $rows[0];
 
-            #TODO: Implement the user data system.
-//            $pk->inventory = $entry["..."];
-//            $pk->statistics = $entry["..."];
+                $client->importData($data["data"]);
+                $client->setUserId($entry["userId"]);
+
+                $pk = new AuthenticationResponsePacket();
+                $pk->username = $entry["username"];
+                $pk->statistics = json_encode($client->exportStatistics());
+                $pk->inventory = json_encode($client->exportInventory());
+                $client->sendDataPacket($pk);
+            });
         });
     }
 
@@ -64,13 +80,68 @@ class DefaultProtocolInterface implements ProtocolInterface
         $pk = new ChatDispatchPacket();
         $pk->location = ($packet->userId != "team");
         $pk->message = $packet->message;
-        if($sendTo != null)
-            $pk->username = $client->getUserId(); #TODO: Implement nicknames.
+        $pk->username = $client->getDisplayName();
 
         if($sendTo != null)
             $sendTo->sendDataPacket($pk);
         else {
             #TODO: Get current player's team and send them the message.
         }
+    }
+
+    public function handleAudioPacket(Player $client, IncomingAudioPacket $packet): void
+    {
+        # send back test packet
+        $pk = new OutgoingAudioPacket();
+        $pk->channels = $packet->channels;
+        $pk->samples = $packet->samples;
+        $pk->frequency = $packet->frequency;
+        $pk->audioData = $packet->audioData;
+        $pk->volume = 0.8;
+
+        foreach($packet->receivers as $clientId)
+            PlayerManager::getPlayerByUserId($clientId)?->sendDataPacket($pk);
+    }
+
+    public function handlePlayerPosition(Player $client, PlayerPositionPacket $packet): void
+    {
+        // TODO: Implement handlePlayerMovement() method.
+    }
+
+    public function handleCoopAction(Player $client, CoopActionPacket $packet): void
+    {
+        $pk = new CoopStatusPacket();
+        $pk->action = CoopStatusPacket::NO_RESPONSE;
+        switch($packet->action) {
+            case CoopActionPacket::START_SESSION:
+                try {
+                    CoopSessionManager::startCoopSession($client);
+                    $pk->statusCode = 200;
+                } catch (Exception) {
+                    $pk->statusCode = 500;
+                }
+                break;
+            case CoopActionPacket::DISBAND_SESSION:
+                try {
+                    CoopSessionManager::disbandCoopSession($client);
+                    $pk->statusCode = 200;
+                } catch (Exception) {
+                    $pk->statusCode = 500;
+                }
+                break;
+            case CoopActionPacket::INVITE_PLAYER:
+                $session = $client->getCoopSession();
+                $session?->invitePlayer($packet->userId);
+                return;
+            case CoopActionPacket::KICK_PLAYER:
+                $session = $client->getCoopSession();
+                $session?->removePlayer($packet->userId, true);
+                return;
+            case CoopActionPacket::JOIN_SESSION:
+                $session = CoopSessionManager::getCoopSessionFromUserId($packet->userId);
+                $session?->addPlayer($client);
+                return;
+        }
+        $client->sendDataPacket($pk);
     }
 }

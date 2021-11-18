@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-php',
-    'version' => 'dev-php',
+    'pretty_version' => 'dev-main',
+    'version' => 'dev-main',
     'aliases' => 
     array (
     ),
-    'reference' => '376e385c9d4f34547c52b0edc58b17df5c43d4f7',
+    'reference' => '127baf550cae358a3b98f831a10b452c2c948a45',
     'name' => 'seelsuche/server',
   ),
   'versions' => 
@@ -37,6 +37,15 @@
       array (
       ),
       'reference' => '1afdd860a2566ed3c2b0b4a3de6e23434a79ec85',
+    ),
+    'pocketmine/classloader' => 
+    array (
+      'pretty_version' => '0.2.0',
+      'version' => '0.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '49ea303993efdfb39cd302e2156d50aa78209e78',
     ),
     'pocketmine/math' => 
     array (
@@ -146,12 +155,12 @@
     ),
     'seelsuche/server' => 
     array (
-      'pretty_version' => 'dev-php',
-      'version' => 'dev-php',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
       ),
-      'reference' => '376e385c9d4f34547c52b0edc58b17df5c43d4f7',
+      'reference' => '127baf550cae358a3b98f831a10b452c2c948a45',
     ),
     'symfony/deprecation-contracts' => 
     array (
