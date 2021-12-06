@@ -140,6 +140,8 @@ class DefaultProtocolInterface implements ProtocolInterface
             case CoopActionPacket::JOIN_SESSION:
                 $session = CoopSessionManager::getCoopSessionFromUserId($packet->userId);
                 $session?->addPlayer($client);
+
+                $pk->action = CoopStatusPacket::JOINING_WORLD;
                 return;
         }
         $client->sendDataPacket($pk);

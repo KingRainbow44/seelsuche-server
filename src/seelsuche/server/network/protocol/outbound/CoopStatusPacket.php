@@ -14,6 +14,7 @@ final class CoopStatusPacket extends OutboundPacket
     public const KICKED = 5;
     public const INVITATION = 6;
     public const JOIN_REQUEST = 7;
+    public const JOINING_WORLD = 8;
 
     protected function pid(): string
     {
