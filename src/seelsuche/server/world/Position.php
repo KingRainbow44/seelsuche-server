@@ -42,6 +42,10 @@ class Position
         $this->position->z = $z;
     }
 
+    public final function fromVector3(Vector3 $position): void{
+        $this->position = $position;
+    }
+
     public final function setWorld(int $world): void{
         $this->world = $world;
     }

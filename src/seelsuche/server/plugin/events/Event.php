@@ -20,6 +20,6 @@ abstract class Event
     }
 
     public function call(): void{
-        Server::getInstance()->getEventManager()->callEvent($this);
+        Server::getInstance()->getPluginManager()->getEventManager()->callEvent($this);
     }
 }

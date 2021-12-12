@@ -3,6 +3,7 @@
 namespace seelsuche\server\network;
 
 use Exception;
+use pocketmine\math\Vector3;
 use seelsuche\server\network\protocol\inbound\AuthenticationRequestPacket;
 use seelsuche\server\network\protocol\inbound\ChatReceivePacket;
 use seelsuche\server\network\protocol\inbound\ClientPingRequestPacket;
@@ -13,6 +14,7 @@ use seelsuche\server\network\protocol\outbound\ChatDispatchPacket;
 use seelsuche\server\network\protocol\outbound\ClientPingResponsePacket;
 use seelsuche\server\network\protocol\outbound\AuthenticationResponsePacket;
 use seelsuche\server\network\protocol\outbound\CoopStatusPacket;
+use seelsuche\server\network\protocol\outbound\EntityPlayOutPositionPacket;
 use seelsuche\server\network\protocol\outbound\OutgoingAudioPacket;
 use seelsuche\server\player\coop\CoopSessionManager;
 use seelsuche\server\player\Player;
@@ -60,7 +62,7 @@ class DefaultProtocolInterface implements ProtocolInterface
                     return;
                 } $data = $rows[0];
 
-                $client->importData($data["data"]);
+                $client->importData($data["data"] ?? "{}");
                 $client->setUserId($entry["userId"]);
 
                 $pk = new AuthenticationResponsePacket();
@@ -85,7 +87,12 @@ class DefaultProtocolInterface implements ProtocolInterface
         if($sendTo != null)
             $sendTo->sendDataPacket($pk);
         else {
-            #TODO: Get current player's team and send them the message.
+            $coopSession = $client->getCoopSession();
+            if($coopSession != null) {
+                foreach($coopSession->getPlayingWith(true, [$client]) as $player) {
+                    $player->sendDataPacket($pk);
+                }
+            }
         }
     }
 
@@ -105,7 +112,20 @@ class DefaultProtocolInterface implements ProtocolInterface
 
     public function handlePlayerPosition(Player $client, PlayerPositionPacket $packet): void
     {
-        // TODO: Implement handlePlayerMovement() method.
+        $position = new Vector3($packet->xOffset, $packet->yOffset, $packet->zOffset);
+        $client->fromVector3($position); # Set the internal record of the player's position.
+
+        # Broadcast the packet to co-op members.
+        if(($session = $client->getCoopSession()) != null) {
+            $pk = EntityPlayOutPositionPacket::create(
+                false, $client->getUserId(),
+                $position, $client->getYaw()
+            );
+
+            foreach($session->getPlayingWith(true, [$client]) as $player) {
+                $player->sendDataPacket($pk);
+            }
+        }
     }
 
     public function handleCoopAction(Player $client, CoopActionPacket $packet): void
@@ -126,7 +146,12 @@ class DefaultProtocolInterface implements ProtocolInterface
                     CoopSessionManager::disbandCoopSession($client);
                     $pk->statusCode = 200;
                 } catch (Exception) {
-                    $pk->statusCode = 500;
+                    if(($session = $client->getCoopSession()) != null) {
+                        $session->removePlayer($client);
+                        $pk->statusCode = 200;
+                    } else {
+                        $pk->statusCode = 500;
+                    }
                 }
                 break;
             case CoopActionPacket::INVITE_PLAYER:

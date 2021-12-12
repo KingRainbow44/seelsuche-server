@@ -11,4 +11,5 @@ interface OutboundPacketIds
     const OUTGOING_AUDIO_PACKET = '0x05';
     const ENTITY_PLAY_OUT_MOVEMENT = '0x06';
     const COOP_STATUS_PACKET = '0x07';
+    const ENTITY_INFORMATION = '0x08';
 }

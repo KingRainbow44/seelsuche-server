@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
 /** @noinspection PhpUndefinedFieldInspection */
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
@@ -8,18 +8,17 @@ namespace seelsuche\server;
 use ClassLoader;
 use Exception;
 use Phar;
-
 use SplObjectStorage;
+
 use JetBrains\PhpStorm\NoReturn;
 
-use seelsuche\server\commands\CommandReader;
-use seelsuche\server\plugin\events\EventManager;
-use seelsuche\server\utils\ServerThread;
 use seelsuche\server\network\DefaultProtocolInterface;
 use seelsuche\server\network\PacketManager;
 use seelsuche\server\network\ProtocolInterface;
 use seelsuche\server\player\PlayerManager;
 use seelsuche\server\utils\Database;
+use seelsuche\server\plugin\PluginManager;
+use const seelsuche\WORKING_DIRECTORY;
 
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
@@ -28,8 +27,8 @@ final class Server implements MessageComponentInterface
 {
     private static ?Server $instance = null;
 
+    private PluginManager $pluginManager;
     private ?Database $database = null;
-    private EventManager $eventManager;
     private SplObjectStorage $clients;
     private ClassLoader $autoloader;
     private ?Phar $pharFile;
@@ -38,7 +37,6 @@ final class Server implements MessageComponentInterface
     private array $config;
 
     public ProtocolInterface $protocolInterface;
-    public CommandReader $console;
 
     /**
      * @throws Exception
@@ -50,12 +48,8 @@ final class Server implements MessageComponentInterface
         self::$instance = $this; $startTime = time();
         $this->autoloader = $autoloader;
 
-        # Initialize the console reader.
-        $this->console = new CommandReader();
-        $this->console->start();
-
         $this->clients = new SplObjectStorage();
-        $this->eventManager = new EventManager();
+        $this->pluginManager = new PluginManager();
 
         $this->config = $config; $this->flags = new Flags($config);
         $this->database = new Database($config["database"]); $this->initializeDatabase();
@@ -129,11 +123,11 @@ final class Server implements MessageComponentInterface
     }
 
     /**
-     * @return EventManager The event manager for the server.
+     * @return PluginManager The plugin manager for this server.
      *
      */
-    public function getEventManager(): EventManager{
-        return $this->eventManager;
+    public function getPluginManager(): PluginManager{
+        return $this->pluginManager;
     }
 
     /**
@@ -206,8 +200,30 @@ final class Server implements MessageComponentInterface
 
     private function initializeDatabase(): void{
         $database = $this->database;
-        $database->query("CREATE TABLE IF NOT EXISTS `users` ( `userId` VARCHAR(10) NOT NULL , `username` tinytext NOT NULL , `hash` TEXT NOT NULL );");
-        $database->query("CREATE TABLE IF NOT EXISTS `data` ( `userId` VARCHAR(10) NOT NULL , `data` LONGTEXT NOT NULL );");
+        try {
+            $database->query("CREATE TABLE IF NOT EXISTS `users` ( `userId` VARCHAR(10) NOT NULL , `username` tinytext NOT NULL , `hash` TEXT NOT NULL );");
+            $database->query("CREATE TABLE IF NOT EXISTS `data` ( `userId` VARCHAR(10) NOT NULL , `data` LONGTEXT NOT NULL );");
+        } catch (Exception) {
+            Logger::critical("Failed to initialize database.");
+            $this->shutdown();
+        }
+    }
+
+    /**
+     * Create server-related files and directories.
+     */
+    private function initializeFileSystem(): void{
+        $workingDirectory = WORKING_DIRECTORY . DIRECTORY_SEPARATOR;
+
+        # Make directories.
+        if(!file_exists($workingDirectory . "plugins"))
+            @mkdir($workingDirectory . "plugins");
+        # Make files.
+        # The configuration is made in the entry point.
+//        if(!file_exists($workingDirectory . "config.json"))
+//            @touch($workingDirectory . "config.json");
+        if(!file_exists($workingDirectory . "server.log"))
+            @touch($workingDirectory . "server.log");
     }
 }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace seelsuche\server\network;
 
+use seelsuche\server\Logger;
 use seelsuche\server\network\protocol\inbound\AuthenticationRequestPacket;
 use seelsuche\server\network\protocol\inbound\ChatReceivePacket;
 use seelsuche\server\network\protocol\inbound\ClientPingRequestPacket;
@@ -13,6 +14,7 @@ use seelsuche\server\network\protocol\inbound\PlayerPositionPacket;
 use seelsuche\server\network\protocol\InboundPacket;
 use seelsuche\server\network\protocol\Packet;
 use seelsuche\server\player\Player;
+use seelsuche\server\Server;
 
 final class PacketManager
 {
@@ -49,6 +51,9 @@ final class PacketManager
         if(!isset($decoded[0]) || $decoded[0] != "packet")
             return;
         $id = $decoded[2]; $content = $decoded[1];
+
+        if(Server::getInstance()->getConfig()->isDebugEnabled())
+            Logger::debug("Received packet with data: $rawData");
 
         if(isset(self::$packets[$id])) {
             $class = self::$packets[$id];

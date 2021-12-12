@@ -18,6 +18,8 @@ final class Database
         if(mysqli_connect_error() !== null) {
             Logger::critical("Unable to connect to MySQL database. Please check your config and restart the server.");
             Server::getInstance()->shutdown();
+        } else {
+            Logger::info("Connected to MySQL database.");
         }
     }
 

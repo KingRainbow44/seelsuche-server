@@ -89,12 +89,13 @@ class Player extends LivingEntity
     }
 
     public function importData(string $serializedData): void{
-        $this->playerData = json_decode($serializedData);
+        $this->playerData = json_decode($serializedData, true);
 
         # Define section blocks.
         $info = $this->playerData["information"];
 
         # Set constants.
+        #TODO: Implement a display name check and prompt to create a display name.
         $this->displayName = $info["displayName"];
     }
 

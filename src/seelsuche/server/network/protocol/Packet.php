@@ -16,10 +16,11 @@ abstract class Packet
     /**
      * Reads the next value sent in the packet.
      */
-    public function next(): mixed{
-        if(!isset($this->toDecode[$this->readNext++])) {
+    protected function next(): mixed{
+        $readNext = $this->readNext++;
+        if(!isset($this->toDecode[$readNext])) {
             $this->readNext--; return null;
         }
-        return $this->toDecode[$this->readNext++]["Value"]["raw"];
+        return $this->toDecode[$readNext]["Value"]["raw"];
     }
 }

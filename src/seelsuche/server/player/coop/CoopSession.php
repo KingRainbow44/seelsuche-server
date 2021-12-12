@@ -3,6 +3,7 @@
 namespace seelsuche\server\player\coop;
 
 use JetBrains\PhpStorm\Pure;
+
 use seelsuche\server\network\protocol\outbound\CoopStatusPacket;
 use seelsuche\server\player\Player;
 use seelsuche\server\player\PlayerManager;
@@ -83,6 +84,7 @@ final class CoopSession
 
         #TODO: Move the player to the co-op world.
         $player->setCoopStatus(true, $this);
+        #TODO: Send join packet to host client.
     }
 
     public function removePlayer($plr, bool $kicked = false): void{
@@ -100,11 +102,12 @@ final class CoopSession
         }
     }
 
-    #[Pure] public function getPlayingWith(bool $includeHost = false): array{
+    #[Pure] public function getPlayingWith(bool $includeHost = false, array $exclude = []): array{
         $players = $this->playingWith;
         if($includeHost)
             $players[$this->host->getUserId()] = $this->host;
-
+        if(!empty($exclude))
+            $players = array_diff_key($players, array_flip($exclude));
         return $players;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace seelsuche\server\network\protocol\outbound;
 
+use JetBrains\PhpStorm\Pure;
+use pocketmine\math\Vector3;
 use seelsuche\server\network\protocol\OutboundPacket;
 
 final class EntityPlayOutPositionPacket extends OutboundPacket
@@ -30,5 +32,16 @@ final class EntityPlayOutPositionPacket extends OutboundPacket
         $this->writeFloat($this->modelPitch);
 
         return $this->prepare();
+    }
+
+    #[Pure] public static function create(bool $boundToEntity, string|int $id, Vector3 $position, float $pitch): self{
+        $packet = new self();
+        $packet->boundToEntity = $boundToEntity;
+        $packet->id = $id;
+        $packet->xOffset = $position->x;
+        $packet->yOffset = $position->y;
+        $packet->zOffset = $position->z;
+        $packet->modelPitch = $pitch;
+        return $packet;
     }
 }

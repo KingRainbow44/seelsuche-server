@@ -31,6 +31,7 @@ $config = json_decode(file_get_contents(
 
 # Define variables.
 define("DEBUG", $config["development"]["enabled"]);
+define("seelsuche\WORKING_DIRECTORY", getWorkingDirectory());
 $encryption = $config["socket"];
 
 $autoloader = new \BaseClassLoader();

@@ -19,7 +19,7 @@ final class ClientPingRequestPacket extends InboundPacket
 
     function decode()
     {
-        $this->clientTime = (string)$this->next();
+        $this->clientTime = (string) $this->next();
     }
 
     function handle(Player $player)
